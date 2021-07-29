@@ -1,0 +1,152 @@
+2010-10-28  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Fixed a bug where it used to let
+		you drag the flattening markers off the screen.
+
+2008-03-22  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Changed version number.  Made it
+		compile with Visual Studio 2008 and NSRG Buildtime 3.0.
+		Made an installer that doesn't rely on NSRG Runtime.
+	* template_based_matching.dsp : No longer needed.
+	* template_based_matching.dsw : No longer needed.
+	* template_based_matching.sln : VS 8 build file.
+	* template_based_matching.vcproj : VS 8 build file.
+
+2006-01-27  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Changed version number.
+	* template_based_matching.tcl : Removed "Change DataSet" button,
+		which is not yet implemented.
+
+2006-01-26  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : This version includes a "Thank-you
+		ware" button.  It also bumps the version number to get a new
+		installer that has the glut32.dll included.
+
+2005-12-29  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : This version uses a median-based
+		metric for line-by-line flattening that is removes the effect
+		where a large spike on a line caused the rest of the line to
+		be lowered.
+
+2005-12-16  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : This version works if you don't specify
+		any templates.  It just saves the center-of-mass and volume info
+		into the CSV file and splats the objects themselves into the final
+		image.
+
+2005-12-16  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Adding labels to the output window
+		showing where each object is located in the image.
+	* template_based_matching.dsp : Not sure.
+
+2005-12-15  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Adding median filter to the
+		pipeline that is used to determine the connected
+		components (but not to the rest of the calculation
+		pipeline).  This REALLY reduces the number of tiny
+		regions above the threshold for the cases I'm seeing with
+		low signal/noise ratio.
+
+2005-12-15  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Adding Gary's "secret sauce"
+		tip-height-removal code into the mix, as an optional
+		(default on) preprocess.  This should help when the start
+		giving me files that has line-by-line flattening turned
+		off.  This should avoid volume distortion to a much
+		larger extent.
+	* template_based_matching.tcl : Whitespace.
+
+2005-12-02  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Setting default to 5-pixel steps.
+	* template_based_matching.tcl : Setting detfault load to directory
+		where the program was run from.
+
+2005-11-09  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Fixed the out-of-bounds bug.
+		Added ability to select templates from the image itself,
+		so that you don't have to model them.
+	* template_based_matching.tcl : Same.
+
+2005-11-03  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Fixed a bug where dilation was not
+		happening for the last component found.  Also added display of
+		the templates splatted into a plane, so that the user can
+		compare the template match with the original image.  Still
+		need to fix the out-of-bounds bug.
+
+2005-11-01  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Added a progress display to let
+		the user know that the program hasn't gone and hung itself.
+		Still has the bug where the code can read past the edge of the
+		grid and cause a crash.
+	* template_based_matching.tcl : Same.
+
+2005-11-01  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Added the matching code and writing
+		results out to a CSV file.  This version seemed to work with the
+		test field, which has well-separated objects not near the edge
+		whose shape is very nearly that of the test objects (had small
+		errors, but nonzero, when testing -- is the scale right?).  It broke
+		when I ran it on the real data set.
+	* template_based_matching.tcl : Same.
+
+2005-10-30  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Added the ability to load in
+		template images, kept in a list.  Also can preview the
+		images.  This version makes you load them one at a time;
+		in the future, we probably want a configuration file that
+		lists all of them at once.
+	* template_based_matching.tcl : Same.
+
+2005-10-28  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Added calculation of min and max
+		threshold for the volumes of the resulting components.
+		Remove ones with to high or too low volume.
+	* template_based_matching.tcl : Same.
+
+2005-10-24  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Added calculation of volumes for the
+		connected components (not yet tested or displayed).
+
+2005-10-24  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Added dilation of regions, with removal
+		of regions that overlap because of dilation.
+
+2005-10-24  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Added connected-component calculation
+		to separate out individual objects that don't touch the
+		border and are above threshold.
+	* template_based_matching.tcl : Removed background-selector swatch,
+		not relevant for this application.
+
+2005-10-24  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	* template_based_matching.cpp : Added height threshold test.
+	* image_example_program.dsw : Removed, replaced with...
+	* template_based_matching.dsw : Replaces above.
+
+2005-10-24  Russell M. Taylor II  <taylorr@cs.unc.edu>
+
+	Initial commit of all files.  This version only has partial function.
+	It lets you select a data file and then put three points to do
+	flattening from.  It then draws a flattened version of the image in
+	a second window.
+

@@ -1,0 +1,255 @@
+<html>
+<head>
+<title>CISMM Template-Based Matching</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<h1>CISMM Template-Based Matching v01.05 Manual</h1>
+<p>The <i>CISMM Template-Based Matching</i> program is designed to locate and 
+  identify objects within Scanned-Probe Microscope images and produce a file of 
+  descriptive statistics about these objects. See the Word document describing 
+  this program for detailed information about the algorithms applied.</p>
+<h2>Cost of Use</h2>
+<p>The development, dissemination, and support of this program is paid for by 
+  the National Institutes of Health <a href="http://www.nibib.nih.gov/">National 
+  Institute for Biomedical Imaging and Bioengineering</a> through its National 
+  Research Resource in <a href="http://www.cs.unc.edu/nano/cismm">Computer-Integrated 
+  Systems for Microscopy and Manipulation</a> at the University of North Carolina 
+  at Chapel Hill. This program is distributed without charge, subject to the following 
+  terms: </p>
+<ul>
+  <li>Acknowledgement in any publication, written, videotaped, or otherwise produced, 
+    that results from using this program. The acknowledgement should credit: CISMM 
+    at UNC-CH, supported by the NIH NIBIB (NIH 5-P41-RR02170).</li>
+  <li>Furnish a reference to (and preferably a copy of) any publication, including 
+    videotape, that you produce and disseminate outside your group using our program. 
+    These should be addressed to: taylorr@cs.unc.edu; Russell M. Taylor II, Department 
+    of Computer Science, Sitterson Hall,University of North Carolina at Chapel 
+    Hill, Chapel Hill, NC 27599-3175.<br>
+  </li>
+</ul>
+<p><b>Thank-You Ware:</b> Rather than making you register to download our software 
+  or join a mailing list or provide other personally-identifying material to use 
+  our code, we've come up with the following easy and anonymous way for you to 
+  let us know we're helping the community. When you press the &quot;Say Thank 
+  You!&quot; button to let us know you appreciate having the tool, the application 
+  sends a web query to our server and logs your response (not your name or your 
+  phone number, just a web hit count). We add up these counts and report them 
+  to the reviewers for our renewal applications when we ask NIBIB to continue 
+  funding us to maintain our existing tools and to build new ones. Please press 
+  the button whenever you feel like the tool has been helpful to you.</p>
+<h2><img src="GUI.jpg" width="155" height="661" align="left"><img src="original.jpg" width="308" height="334" align="right">Main 
+  Controls</h2>
+<p>The control panel appears in the upper-left corner of the screen. If the program 
+  was started by pulling an image onto the desktop icon, a set of image windows 
+  will appear next to the control panel. If the program is started by clicking 
+  on one of the icons, a dialog box will appear asking for a data file to open. 
+  The data file can be an SPM file, or an image file such as TIFF or JPEG. Image 
+  files will lose the metric information, so that size and volume comparisons 
+  will only be relative. The image itself will appear in a window entitled <i>Original 
+  Image</i> immediately to the right of the control panel (an example is seen 
+  here to the right, it is the <i>test_field.unca</i> file that is found in the 
+  default directory). This window includes three red '+' signs that can be moved 
+  using the left mouse button. These marks should be moved to three places on 
+  the substrate of the scan.</p>
+<h2>Filtering Operations</h2>
+<p>There are two filters that can be applied to the data. Each is on by default. 
+  The <i>substrate_fit</i> filter attempts to remove the effects of tip-length 
+  artifacts and other changes that cause individual scanlines to change their 
+  height. It is similar to the &quot;line-by-line flattening&quot; operations 
+  performed by AFM software, but it does more than simply make the average of 
+  each line match that of the line before. Rather, it takes the median step from 
+  one line to the next after filtering each line to remove the effects of noise.</p>
+<p>The <i>median_filter</i> applies only to the process of determining connected-component 
+  regions. It does not apply to the data used for fitting, or to the output image. 
+  It is present to reduce the effects of noise, especially for the case of noisy 
+  surfaces that are supposed to be flat. It is on by default.</p>
+<h2><img src="flattened.jpg" width="308" height="334" align="right">Plane Fit</h2>
+<p>A plane is fit through the three points, and it is used as an estimate of the 
+  subtrate. This plane is subtracted from all data points, effectively shearing 
+  the data sets so that the plane of the substrate is at Z=0.</p>
+<h2>Connected Components</h2>
+<p>At this point, the flattened image is searched for &quot;islands&quot; that 
+  poke up above a &quot;sea level&quot; that is set using the <i>height_threshold</i> 
+  control. This control is set to the fraction of the maximum height that a pixel 
+  must have to stick above the &quot;waterline&quot;. Objects that touch the edge 
+  of the image are discarded and drawn in a lighter blue color.</p>
+<h2>Loading Templates</h2>
+<p><img src="template.jpg" width="123" height="84" align="left">Before going any 
+  further, you should load the templates (by repeatedly selecting the <i>Add Template</i> 
+  button and selecting the templates one at a time. (Do it now because later steps 
+  make this much slower). Each template will show up in a window that looks like 
+  the one on the left. The particular template shown is the <i>dimer_180.unca</i> 
+  template from the default directory. Load each template that you want to get 
+  from a file before going on. You might create templates using the <i>CISMM Microscope 
+  Simulator</i> program, which is available from the <a href="http://www.cs.unc.edu/Research/nano/cismm/download/index.html">software 
+  download page</a>. If you want to select templates from the image itself, this 
+  will have to be done later.</p>
+<h2><img src="proteins.jpg" width="260" height="273" align="right">Dilation and 
+  Thresholding</h2>
+<p>Next, select the desired settings for <i>dilation</i> and the <i>Volume Thresholds</i>. 
+  The dilation spreads out each object &quot;island&quot; by the specified number 
+  of pixels. This will recover volume from the islands that is below the waterline. 
+  If this spreading causes two islands to meet, or an island to meet the edge 
+  of the image, the merged islands will turn light blue and be removed from consideration. 
+  Some such blue islands are shown in the image to the right.</p>
+<p>Adjust the Volume Threshold sliders to select islands only of the appropriate 
+  size. These are set to the fraction of the maximum-volume object that should 
+  be selected. Objects whose volumes are above the top threshold or below the 
+  lower threshold will turn red and are removed from further consideration. An 
+  example of such removed islands is shown to the right from an image that comes 
+  from Dorothy Erie's lab showing protein complexes. The objects that remain gray 
+  are the ones that will be matched against the templates.</p>
+<h2>Creating new Templates from the Image (Optional)</h2>
+<p>If you want to use objects in the image itself as templates, first dilate the 
+  image enough that a good surround for each object is produced (5 pixels, perhaps). 
+  Then click on the object in the <i>Flattened</i> window that you want to make 
+  into a template. This will bring up a dialog box that lets you specify the name 
+  of the template file to save this object in, and it will also load it into the 
+  list of templates to be compared against. Parts of the image that are outside 
+  of the dilated object are set to zero, so they will match substrate best.</p>
+<p>Once saved, these templates can be re-used on other images. Note that for microscope 
+  image formats, rescanning at different sizes will be properly compensated for: 
+  the template will retain its real-world size independent of the scan resolution 
+  or scan size. This will not be true for image file formats (TIFF, JPEG), which 
+  don't have metric information telling their pixel sizes.</p>
+<h2>Angle and Pixel Step</h2>
+<p>The final settings are the angle and pixel step to take when attempting to 
+  match the templates to each object. The <i>angle_step</i> setting tells how 
+  much to rotate each template between attempts at matching. The <i>pixel_step</i> 
+  control tells how far to shift the templates when comparing them. The center 
+  of mass of the template is translated to match the center of mass of the object, 
+  so it is possible that a large setting will be acceptible, and it is much faster 
+  to use a large setting.</p>
+<h2>Optimizing and Saving Results</h2>
+<p>Once the above settings have been made, it is time to run the template match. 
+  This is done by pressing the <i>Save</i> button and selecting the name of the 
+  comma-separated-values (CSV) file that holds the information about the best 
+  matches. A progress window appears, showing how many templates have been tested 
+  against each object. When the object counter has counted up to its maximum, 
+  and all templates have been tested against it, the window will close and the 
+  CSV file will contain the matches (as described below). You can cancel the operation 
+  using the <i>cancel</i> button in the progress window (it will stop after the 
+  current template-vs-object test is complete).</p>
+<h2><img src="best_fit.jpg" width="260" height="273" align="right">Best-Fit Window</h2>
+<p>Once optimization has completed, visual display of the best-fit objects is 
+  provided in a third image window that is initially located below the <i>Flattened</i> 
+  window. This window is named <i>Best Fit</i>, and it displays the best-fit template 
+  for each object, translated and rotated to its best-fit location based on the 
+  angle and pixel steps provided, and resampled into the same space as the original 
+  image. The image to the right shows the result when the example templates are 
+  used with 10-degree orientation testing on the image from Dorothy Erie's laboratory 
+  shown above.</p>
+<p>If no templates are loaded, the components themselves will be splatted into 
+  this window. Note that they may not look exactly like they did in the original 
+  image because they will have been shifted to their center of mass and resampled.</p>
+<h2>Labeling</h2>
+<p>If the <i>show_labels</i> checkbox is checked, the identifiers from the connected 
+  components will be drawn in the best-fit window. These will match the component 
+  ids stored in the file, and can be useful to provide a map of which component 
+  was where in the image.</p>
+<h2></h2>
+<h2>Output File Format</h2>
+<p>The <i>comma-separated-values</i> (CSV) file written by the program is intended 
+  to be loaded into a spreadsheet program or another data-analysis program. It 
+  consists of a header line and then one line for each of the objects in the image. 
+  The header line contains the following text names: descriptions of each are 
+  included here, but are not included in the file.</p>
+<p>If no templates have been loaded, only the center of mass and volume entries 
+  will be filled in.</p>
+<table width="100%" border="1">
+  <tr>
+    <td width="19%">Object_ID</td>
+    <td width="81%">Index of the objects found, starting at zero.</td>
+  </tr>
+  <tr>
+    <td width="19%">X</td>
+    <td width="81%">X coordinate (in pixels) of the center of mass of the object, 
+      X=0 at left side of the image.</td>
+  </tr>
+  <tr>
+    <td width="19%">Y</td>
+    <td width="81%">Y coordinate (in pixels) of the center of mass of the object, 
+      Y=0 at the bottom of the image.</td>
+  </tr>
+  <tr>
+    <td width="19%">Volume</td>
+    <td width="81%">Volume of the object (in cubic nanometers for DI, UNCA, TopoMetrix 
+      files; in arbitrary units for TIFF and other image file formats).</td>
+  </tr>
+  <tr>
+    <td width="19%">Best_template</td>
+    <td width="81%">Name of the file from which the template which best matches 
+      (least error) this object was loaded.</td>
+  </tr>
+  <tr>
+    <td width="19%">Best_error</td>
+    <td width="81%">Sum of squared errors between the pixels in the template images 
+      and the corresponding locations in the object, at the angle specified below.</td>
+  </tr>
+  <tr>
+    <td width="19%">Best_angle</td>
+    <td width="81%">Angle at which the template was a best match for the object.</td>
+  </tr>
+  <tr>
+    <td width="19%">Second_best_template</td>
+    <td width="81%">Name of the file from which the object that had the second-best 
+      fit (second lowest error) was loaded.</td>
+  </tr>
+  <tr>
+    <td width="19%">Second_best_error</td>
+    <td width="81%">Sum of squared errors between the pixels in the template images 
+      and the corresponding locations in the object, at the angle specified below.</td>
+  </tr>
+  <tr>
+    <td width="19%">Second_best_angle</td>
+    <td width="81%">Angle at which the template was a best match for the object.</td>
+  </tr>
+</table>
+<h1>Version Information</h1>
+<p>Version 01.05:</p>
+<ul>
+  <li>Removing need to link with the NSRG Runtime.</li>
+</ul>
+<p></p>
+<p></p>
+<p>Version 01.04:</p>
+<ul>
+  <li>Removing inactive &quot;Change DataSet&quot; button.</li>
+</ul>
+<p></p>
+<p>Version 01.03:</p>
+<ul>
+  <li>Added &quot;Say Thank You!&quot; button to let users let us know when the 
+    software makes them happy.</li>
+</ul>
+<p></p>
+<p>Version 01.02:</p>
+<ul>
+  <li>Switched to a median-offset-based line-by-line flattening, which keeps the 
+    whole line from moving down when a tall object is present.</li>
+</ul>
+<p>Version 01.01:</p>
+<ul>
+  <li>Added a low-pass-filter based line-by-line flattening filter to help remove 
+    scanline artifacts without modifying the volume estimates. This should let 
+    us work on non-flattened data without trouble from bowing artifacts.</li>
+  <li>Added a median filter to the data used for connected-component calculation, 
+    to reduce the effect of noise.</li>
+  <li>Added the option to label regions on the best-fit display.</li>
+  <li>Added the option to save without defining any templates: the program stores 
+    just the volume and centering information and splats the actual data back 
+    into the window, rather than splatting templates.</li>
+</ul>
+<p>Version 01.00:</p>
+<ul>
+  <li>Initial release. Tested with example templates and a file made to exactly 
+    match them.</li>
+  <li>Known bug: If the templates have a lower sampling resolution (smaller size) 
+    than the objects in the main window, this resampling will cause spikes of 
+    value with zeroes around them within the objects, making a very broken-up 
+    picture.</li>
+</ul>
+</body>
+</html>
